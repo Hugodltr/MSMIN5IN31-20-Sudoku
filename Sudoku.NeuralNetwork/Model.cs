@@ -35,7 +35,7 @@ namespace Sudoku.NeuralNetwork
         {
             // Global parameters
             string datasetPath = @"Sudoku.NeuralNetwork\Dataset\sudoku.csv.gz";
-            int numSudokus = 1000000;
+            int numSudokus = 1000;
 
             // ML parameters
             double testPercent = 0.2;

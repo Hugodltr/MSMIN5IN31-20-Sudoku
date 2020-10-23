@@ -14,7 +14,7 @@ namespace NeuralNetworkGenrator
 
             Console.WriteLine("Accuracy : " + accuracy + "%");
 
-            model.Save(DataSetHelper.GetFullPath(@"Sudoku.NeuralNetwork\Models\sudoku.model"));
+            // model.Save(DataSetHelper.GetFullPath(@"Sudoku.NeuralNetwork\Models"));
         }
     }
 }
