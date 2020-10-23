@@ -51,10 +51,13 @@ namespace Sudoku.NeuralNetwork
 		public static NDarray PreprocessSudokus(List<Core.Sudoku> sudokus)
         {
 			List<NDarray> rawRes = new List<NDarray>();
+			int i = 0;
 			foreach(Core.Sudoku sudoku in sudokus)
             {
+				Console.Write("\r{0}%   ", i);
 				rawRes.Add(np.array(sudoku.Cells.ToArray()).reshape(9, 9, 1));
 			}
+			i++;
 
 			NDarray res = np.array(rawRes.ToArray());
 			res = (res / 9) - 0.5;

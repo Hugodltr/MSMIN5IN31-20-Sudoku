@@ -35,7 +35,7 @@ namespace Sudoku.NeuralNetwork
         {
             // Global parameters
             string datasetPath = @"Sudoku.NeuralNetwork\Dataset\sudoku.csv.gz";
-            int numSudokus = 1000;
+            int numSudokus = 1000000;
 
             // ML parameters
             double testPercent = 0.2;
@@ -43,12 +43,12 @@ namespace Sudoku.NeuralNetwork
             int batchSize = 32;
             int epochs = 2;
 
-            // Initialize dataset
+            Console.WriteLine("Initialize dataset");
             var (sPuzzles, sSols) = DataSetHelper.ParseCSV(datasetPath, numSudokus);
             var (_sPuzzzlesTrain, _sPuzzlesTest) = DataSetHelper.SplitDataSet(sPuzzles, testPercent);
             var (_sSolsTrain, _sSolsTest) = DataSetHelper.SplitDataSet(sSols, testPercent);
 
-            // Preprocess data
+            Console.WriteLine("Preprocess data");
             var sPuzzzlesTrain = DataSetHelper.PreprocessSudokus(_sPuzzzlesTrain);
             var sSolsTrain = DataSetHelper.PreprocessSudokus(_sSolsTrain);
             var sPuzzlesTest = DataSetHelper.PreprocessSudokus(_sPuzzlesTest);
@@ -58,12 +58,12 @@ namespace Sudoku.NeuralNetwork
             var adam = new Keras.Optimizers.Adam(learningRate);
             model.Compile(loss: "sparse_categorical_crossentropy", optimizer: adam);
 
-            // Train model
+            Console.WriteLine("Train model");
             model.Fit(sPuzzzlesTrain, sSolsTrain, batch_size: batchSize, epochs: epochs);
 
             // Test model
             int correct = 0;
-            for(int i = 0; i < 10; i++)
+            for(int i = 0; i < 1; i++)
             {
                 Console.WriteLine("Testing " + i);
 
@@ -86,7 +86,7 @@ namespace Sudoku.NeuralNetwork
                         }
                     }
                 }
-                Console.WriteLine("Prediction : \n" + prediction);
+                Console.WriteLine("Prediction : \n" + sPredict);
                 Console.WriteLine("Solution : \n" + sSol);
 
                 if(same)
@@ -110,9 +110,8 @@ namespace Sudoku.NeuralNetwork
             {
                 var output = model.Predict(sFeatures.reshape(1, 9, 9, 1));
                 output = output.squeeze();
-                prediction = np.argmax(output, axis: 1).reshape(9, 9) + 1;
-                var proba = np.around(np.max(output, axis: new[] { 1 }).reshape(9, 9), 2);
-
+                prediction = np.argmax(output, axis: 1).reshape(9, 9) + 1; // Nb le plus susceptible d'être pris
+                var proba = np.around(np.max(output, axis: new[] { 1 }).reshape(9, 9), 2); // Proba que ce nombre soit bon
                 sFeatures = ((sFeatures + 0.5) * 9).reshape((9,9));
 
                 // Si plus de 0 dans le sudokus 

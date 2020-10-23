@@ -13,6 +13,8 @@ namespace NeuralNetworkGenrator
             (model, accuracy) = Model.TrainAndTest(model);
 
             Console.WriteLine("Accuracy : " + accuracy + "%");
+
+            model.Save(DataSetHelper.GetFullPath(@"Sudoku.NeuralNetwork\Models\sudoku.model"));
         }
     }
 }
